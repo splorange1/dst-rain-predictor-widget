@@ -119,19 +119,29 @@ local function PredictRainStop()
 	local rain = nil
 	local world = GetWorld()
 
+	local totalseconds = 0
+
 	local dbgstr = (world == "Island" or world == "Volcano") and TheWorld.net.components.weather:GetIADebugString() or
 			world == "Surface" and TheWorld.net.components.weather:GetDebugString() or
 			world == "Caves" and TheWorld.net.components.caveweather:GetDebugString()
 
-	local _, _, moisture, moisturefloor, moistureceil, moisturerate, preciprate, peakprecipitationrate = string.find(dbgstr, ".*moisture:(%d+.%d+)%((%d+.%d+)/(%d+.%d+)%) %+ (%d+.%d+), preciprate:%((%d+.%d+) of (%d+.%d+)%).*")
+	if _G.TheWorld.state.islunarhailing then
+		local LUNARHAIL_CEIL = 100
+		totalseconds = _G.TheWorld.state.lunarhaillevel * (TUNING.LUNARHAIL_EVENT_TIME / LUNARHAIL_CEIL)
+	end
+
+	if TheWorld.state.hurricane then
+		local _, _, hurricane_timer, hurricane_duration = string.find(dbgstr, ".*hurricane:(%d+.%d+)/(%d+.%d+).*")
+		totalseconds = hurricane_duration - hurricane_timer
+	end
+
+	local _, _, moisture, moisturefloor, moistureceil, moisturerate, preciprate, peakprecipitationrate = string.find(dbgstr, ".*moisture:%s?(%d+.%d+)%s?%((%d+.%d+)/(%d+.%d+)%) %+ (%-?%d+.%d+).*preciprate:%s?%((%d+.%d+) of (%d+.%d+)%).*")
 
 	moisture = tonumber(moisture)
 	moistureceil = tonumber(moistureceil)
 	moisturefloor = tonumber(moisturefloor)
 	preciprate = tonumber(preciprate)
 	peakprecipitationrate = tonumber(peakprecipitationrate)
-
-	local totalseconds = 0
 
 	while moisture > moisturefloor do
 		if preciprate > 0 then
@@ -145,11 +155,6 @@ local function PredictRainStop()
 		else
 			break
 		end
-	end
-
-	if TheWorld.state.hurricane then
-		local _, _, hurricane_timer, hurricane_duration = string.find(dbgstr, ".*hurricane:(%d+.%d+)/(%d+.%d+).*")
-		totalseconds = hurricane_duration - hurricane_timer
 	end
 
 	local days = TheWorld.state.cycles + 1 + TheWorld.state.time + (totalseconds / TUNING.TOTAL_DAY_TIME)

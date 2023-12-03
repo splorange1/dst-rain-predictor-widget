@@ -1,7 +1,7 @@
 name = "Rain Predictor Widget"
 description = "Grants you a widget that predicts the beginning and endings of rain"
 author = "splorange"
-version = "1.3"
+version = "1.4"
 api_version = 10
 
 dst_compatible = true
