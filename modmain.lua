@@ -3,10 +3,10 @@ local Image = require "widgets/image"
 local ImageButton = require "widgets/imagebutton"
 
 Assets = {
-    Asset("ATLAS","images/status_bgs.xml"),
-    Asset("IMAGE","images/status_bgs.tex"),
-	Asset("ATLAS","images/rain.xml"),
-    Asset("IMAGE","images/rain.tex"),
+    Asset("ATLAS","images/rainwidget_bg.xml"),
+    Asset("IMAGE","images/rainwidget_bg.tex"),
+	Asset("ATLAS","images/rainwidget_rainicon.xml"),
+    Asset("IMAGE","images/rainwidget_rainicon.tex"),
 }
 
 local WidgetPos = GetModConfigData("configWidgetPos")

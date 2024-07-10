@@ -6,10 +6,10 @@ local Image = require "widgets/image"
 local ImageButton = require "widgets/imagebutton"
 
 Assets = {
-    Asset("ATLAS","images/status_bgs.xml"),
-    Asset("IMAGE","images/status_bgs.tex"),
-	Asset("ATLAS","images/rain.xml"),
-    Asset("IMAGE","images/rain.tex"),
+    Asset("ATLAS","images/rainwidget_bg.xml"),
+    Asset("IMAGE","images/rainwidget_bg.tex"),
+	Asset("ATLAS","images/rainwidget_rainicon.xml"),
+    Asset("IMAGE","images/rainwidget_rainicon.tex"),
 }
 
 local function GetWorld()
@@ -179,9 +179,9 @@ local RainWidget = Class(Widget, function(self, owner)
 	self.inpos = Vector3(-22,-30) --105 is the good one :)
 	self.outpos = Vector3(50,-30)
 
-	self.bg = self:AddChild(Image("images/status_bgs.xml", "status_bgs.tex"))
+	self.bg = self:AddChild(Image("images/rainwidget_bg.xml", "rainwidget_bg.tex"))
 
-	self.button = self.bg:AddChild(ImageButton("images/rain.xml", "rain.tex"))
+	self.button = self.bg:AddChild(ImageButton("images/rainwidget_rainicon.xml", "rainwidget_rainicon.tex"))
 	self.button:SetPosition(70,0)
 	self.button:SetScale(0.6,0.6,0.6)
 
@@ -229,6 +229,7 @@ function RainWidget:OnClickText()
 end
 
 function RainWidget:OnClickButton()
+	--VisitURL("https://signup.leagueoflegends.com/en-us/signup/redownload") no.... we must not.
 	if self.open then
 		self:MoveTo(self.outpos,self.inpos,0.2)
 		self.open = false
